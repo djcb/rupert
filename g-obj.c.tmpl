@@ -1,0 +1,168 @@
+/* copyright blurb here */
+
+#include "@FILE_BASE@.h"
+
+struct _@CC_NAME@Private {
+       char *foobar;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (@CC_NAME@, @LU_NAME@, G_TYPE_OBJECT);
+
+static void @LU_NAME@_class_init (@CC_NAME@Class *klass);
+static void @LU_NAME@_init       (@CC_NAME@ *self);
+static void @LU_NAME@_finalize   (GObject *obj);
+
+typedef enum {
+	SIG0 = 0,
+	SIG_CUUX,
+	/*  ...other sigs... */
+	SIG_NUM
+} @CC_NAME@Sigs;
+
+static guint SIGS[SIG_NUM] = {0};
+
+typedef enum {
+	PROP0 = 0,
+	PROP_FOOBAR,
+	/*  ...other props... */
+	PROP_NUM
+} @CC_NAME@Props;
+
+static GParamSpec* PROPS[PROP_NUM] = { NULL, };
+
+static void
+set_property (GObject  *obj, guint prop_id,
+              const GValue *val, GParamSpec *pspec)
+{
+	@CC_NAME@ *self;
+
+        self = @UU_NAME@(obj);
+
+        switch (prop_id) {
+	case PROP_FOOBAR:
+		g_clear_pointer (&self->priv->foobar, g_free);
+		self->priv->foobar = g_value_dup_string (val);
+		break;	
+        default:
+                G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, pspec);
+        }
+}
+
+static void
+get_property (GObject *obj, guint prop_id,
+              GValue *val, GParamSpec *pspec)
+{
+	@CC_NAME@ *self;
+
+        self = @UU_NAME@(obj);
+
+        switch (prop_id) {
+	case PROP_FOOBAR:
+		if (self->priv->foobar)
+			g_value_set_string (val, self->priv->foobar);
+		break;
+        default:
+                G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, pspec);
+        }
+}
+
+
+static void
+@LU_NAME@_class_init (@CC_NAME@Class *klass)
+{
+        GObjectClass *gobject_class;
+
+        gobject_class = G_OBJECT_CLASS(klass);
+
+        gobject_class->finalize     = @LU_NAME@_finalize;
+        gobject_class->set_property = set_property;
+        gobject_class->get_property = get_property;
+
+	/**
+	 * @CC_NAME@::cuux:
+	 * @self: the instance emitting the `cuux` signal
+	 * @num: some important number 
+	 *
+	 * Signal emitted when `cuux` happens.
+	 */
+	SIGS [SIG_CUUX] =
+                g_signal_new (
+                        "cuux",
+                        G_TYPE_FROM_CLASS (gobject_class),
+                        G_SIGNAL_RUN_LAST | G_SIGNAL_NO_RECURSE |
+                        G_SIGNAL_NO_HOOKS,
+                        0,
+                        NULL /* accumulator */,
+                        NULL /* accumulator data */,
+                        g_cclosure_marshal_VOID__UINT,
+                        G_TYPE_NONE, /* return_type */
+                        1,           /* n_params */
+                        G_TYPE_UINT);
+
+        /**
+         * @CC_NAME@:foobar:
+         *
+         * The name property for this object.
+         */
+        PROPS[PROP_FOOBAR] =
+                g_param_spec_string (
+			"foobar", "FooBar", "A fooish bar", NULL, 
+			G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+				    
+	g_object_class_install_properties (gobject_class, PROP_NUM, PROPS);
+}
+
+static void
+@LU_NAME@_init (@CC_NAME@ *self)
+{
+        self->priv = @LU_NAME@_get_instance_private (self);
+}
+
+static void
+@LU_NAME@_finalize (GObject *obj)
+{
+	@CC_NAME@ *self;
+
+        self = @UU_NAME@(obj);
+
+	g_free (self->priv->foobar);
+
+        G_OBJECT_CLASS(@LU_NAME@_parent_class)->finalize (obj);
+}
+
+
+@CC_NAME@*
+@LU_NAME@_new (GError **err)
+{
+        @CC_NAME@ *self;
+
+        self = @UU_NAME@(g_object_new(@UU_PREFIX@_TYPE_@UU_BASE@, NULL));
+
+	return self;
+}
+
+const char*
+@LU_NAME@_get_foobar (@CC_NAME@ *self)
+{
+	g_return_val_if_fail (@UU_PREFIX@_IS_@UU_BASE@(self), NULL);
+
+	return self->priv->foobar;
+}
+
+void
+@LU_NAME@_set_foobar (@CC_NAME@ *self, const char *foobar)
+{
+	g_return_if_fail (@UU_PREFIX@_IS_@UU_BASE@(self));
+	g_return_if_fail (foobar);
+
+	g_object_set (G_OBJECT(self), "foobar", foobar, NULL);
+}
+
+void
+@LU_NAME@_emit_cuux (@CC_NAME@ *self, guint num)
+{
+	g_return_if_fail (@UU_PREFIX@_IS_@UU_BASE@(self));
+
+	g_signal_emit (self, SIGS[SIG_CUUX], 0, num);
+}
+

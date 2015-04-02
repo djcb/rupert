@@ -1,0 +1,116 @@
+/* copyright blurb here */
+
+#ifndef __@UU_NAME@_H__
+#define __@UU_NAME@_H__
+
+#include <glib-object.h>
+
+/**
+ * SECTION:@FILE_BASE@
+ * @short_description: short description
+ * @title: the title
+ * @section_id:
+ * @include: @FILE_BASE@.h
+ *
+ * Description of this object.
+ */
+
+G_BEGIN_DECLS
+
+/*
+ * convenience macros
+ */
+#define @UU_PREFIX@_TYPE_@UU_BASE@             (@LU_NAME@_get_type())
+#define @UU_PREFIX@_@UU_BASE@(self)            (G_TYPE_CHECK_INSTANCE_CAST((self), \
+                                     @UU_PREFIX@_TYPE_@UU_BASE@,@CC_NAME@))
+#define @UU_PREFIX@_@UU_BASE@_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST((klass),   \
+				     @UU_PREFIX@_TYPE_@UU_BASE@,@CC_NAME@Class))
+#define @UU_PREFIX@_IS_@UU_BASE@(self)         (G_TYPE_CHECK_INSTANCE_TYPE((self), \
+                                     @UU_PREFIX@_TYPE_@UU_BASE@))
+#define @UU_PREFIX@_IS_@UU_BASE@_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE((klass),   \
+                                     @UU_PREFIX@_TYPE_@UU_BASE@))
+#define @UU_PREFIX@_@UU_BASE@_GET_CLASS(self)  (G_TYPE_INSTANCE_GET_CLASS((self),  \
+                                     @UU_PREFIX@_TYPE_@UU_BASE@,@CC_NAME@Class))
+
+typedef struct _@CC_NAME@        @CC_NAME@;
+typedef struct _@CC_NAME@Class   @CC_NAME@Class;
+typedef struct _@CC_NAME@Private @CC_NAME@Private;
+
+
+/**
+ * @CC_NAME@:
+ *
+ * The #@CC_NAME@ structure contains only private data and should be
+ * accessed using its public API
+ *
+ */
+struct _@CC_NAME@ {
+        /*< private >*/
+	GObject			 parent;
+	@CC_NAME@Private	*priv;
+};
+
+/**
+ * @CC_NAME@Class:
+ * 
+ * Class structure for #@CC_NAME@. The #@CC_NAME@Class structure contains
+ * only private data and should be accessed using its public API.
+ */
+struct _@CC_NAME@Class {
+	/*< private >*/
+	GObjectClass	parent_class;
+};
+
+/**
+ * @LU_NAME@_get_type:
+ * 
+ * Get the #GType for #@CC_NAME@
+ * 
+ * Returns: the #GType
+ */
+GType @LU_NAME@_get_type    (void) G_GNUC_CONST;
+
+/**
+ * @LU_NAME@_new:
+ * @err: (allow-none): receives error information
+ *
+ * Example constructor function to get a new #@CC_NAME@ instance
+ *
+ * Returns: (transfer full): a new #@CC_NAME@ instance or %NULL
+ * in case of error. Free with g_object_unref().
+ */
+@CC_NAME@* @LU_NAME@_new (GError **err) G_GNUC_WARN_UNUSED_RESULT;
+
+/**
+ * @LU_NAME@_get_foobar:
+ * @self: a #@CC_NAME@ instance
+ *
+ * Example getter function to get the #@CC_NAME@:foobar property
+ *
+ * Returns: (transfer none): #@CC_NAME@'s foobar.
+ */
+const char* @LU_NAME@_get_foobar (@CC_NAME@ *self);
+
+/**
+ * @LU_NAME@_set_foobar:
+ * @self: a #@CC_NAME@ instance
+ * @name: the new foobar for the #@CC_NAME@
+ *
+ * Example setter function to set the #@CC_NAME@:foobar property
+ */
+void @LU_NAME@_set_foobar (@CC_NAME@ *self, const char *name);
+
+/**
+ * @LU_NAME@_emit_cuux:
+ * @self: a #@CC_NAME@ instance
+ * @num: the number to emit
+ *
+ * Example function to demonstrate emitting the #@CC_NAME@::cuux
+ * signal.
+ */
+void @LU_NAME@_emit_cuux (@CC_NAME@ *self, guint num);
+
+G_END_DECLS
+
+#endif /* __@UU_NAME@_H__ */
+
